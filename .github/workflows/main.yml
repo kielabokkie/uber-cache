@@ -1,0 +1,62 @@
+name: Code Quality
+
+on: [push]
+
+jobs:
+    tests:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                php-versions: [8.0, 7.4]
+                laravel: [8.*, 7.*, 6.*]
+                include:
+                    - laravel:  8.*
+                      testbench: 6.*
+                    - laravel:  7.*
+                      testbench: 5.*
+                    - laravel:  6.*
+                      testbench: 4.*
+
+        name: P${{ matrix.php-versions }} - L${{ matrix.laravel }}
+
+        steps:
+            - uses: actions/checkout@v2
+            - name: Install PHP versions
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-versions }}
+            - name: Get Composer Cache Directory
+              id: composer-cache
+              run: |
+                  echo "::set-output name=dir::$(composer config cache-files-dir)"
+            - uses: actions/cache@v2
+              id: actions-cache
+              with:
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-composer-
+            - name: Cache dependencies
+              uses: actions/cache@v2
+              id: vendor-cache
+              with:
+                  path: vendor
+                  key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+            - name: Install dependencies
+              run: |
+                  composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+                  composer update --prefer-stable --prefer-dist --no-interaction --no-suggest
+
+            - name: Run tests
+              run: vendor/bin/phpunit --testdox
+
+            - name: Code sniffer
+              run: |
+                  composer require --dev squizlabs/php_codesniffer
+                  vendor/bin/phpcs --standard=PSR12 src
+
+            - name: Static analysis
+              run: |
+                  composer require --dev nunomaduro/larastan
+                  vendor/bin/phpstan analyse src -c ./vendor/nunomaduro/larastan/extension.neon  --level=8 --no-progress
