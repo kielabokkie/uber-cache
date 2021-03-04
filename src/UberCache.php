@@ -5,6 +5,7 @@ namespace Kielabokkie\UberCache;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Cache;
+use Kielabokkie\UberCache\Exceptions\UberCacheException;
 
 class UberCache
 {
@@ -60,7 +61,7 @@ class UberCache
                 return Cache::get($key);
             }
 
-            throw $e;
+            throw UberCacheException::expired($key, $expireAt);
         }
     }
 }
