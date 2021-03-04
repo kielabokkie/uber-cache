@@ -50,8 +50,8 @@ class UberCache
             $value = $callback();
 
             Cache::put($key, $value);
-            Cache::put(\sprintf('%s:cachedAt', $key), now());
-            Cache::put(\sprintf('%s:expireAt', $key), $maxTtl);
+            Cache::put(\sprintf('%s:cachedAt', $key), now(), $maxTtl);
+            Cache::put(\sprintf('%s:expireAt', $key), $maxTtl, $maxTtl);
 
             return $value;
         } catch (Exception $e) {
@@ -61,7 +61,7 @@ class UberCache
                 return Cache::get($key);
             }
 
-            throw UberCacheException::expired($key, $expireAt);
+            throw UberCacheException::expired($key);
         }
     }
 }

@@ -7,10 +7,10 @@ use Exception;
 
 final class UberCacheException extends Exception
 {
-    public static function expired(string $key, Carbon $maxTtl): self
+    public static function expired(string $key): self
     {
         return new self(
-            sprintf('Cache for key "%s" expired at %s', $key, $maxTtl->toDateTimeLocalString())
+            sprintf('Cache for key "%s" expired before it could be refreshed.', $key)
         );
     }
 }

@@ -68,9 +68,8 @@ class UberCacheTest extends TestCase
         $this->expectException(\Exception::class);
 
         $exceptionMessage = sprintf(
-            'Cache for key "%s" expired at %s',
-            $key,
-            $expireAt->toDateTimeLocalString()
+            'Cache for key "%s" expired before it could be refreshed.',
+            $key
         );
 
         $this->expectExceptionMessage($exceptionMessage);
@@ -78,5 +77,32 @@ class UberCacheTest extends TestCase
         UberCache::remember($key, now()->addMinute(), now()->addHour(), function () {
             throw new \Exception('fail 2');
         });
+    }
+
+    /** @test */
+    public function no_keys_are_left_behind_in_the_cache(): void
+    {
+        $key = 'test3';
+
+        UberCache::remember($key, now()->addMinute(), now()->addHour(), function () {
+            return 11;
+        });
+
+        $cacheValue = Cache::get($key);
+        self::assertEquals(11, $cacheValue);
+
+        Travel::to(now()->addHours(2));
+
+        // Outside of regular ttl and cache expiry time so exception is thrown
+        $this->expectException(UberCacheException::class);
+
+        try {
+            UberCache::remember($key, now()->addMinute(), now()->addHour(), function () {
+                throw new \Exception('fail');
+            });
+        } finally {
+            self::assertNull(Cache::get(\sprintf('%s:cachedAt', $key)));
+            self::assertNull(Cache::get(\sprintf('%s:expireAt', $key)));
+        }
     }
 }
