@@ -15,7 +15,7 @@ class UberCache
      * @param Carbon $maxTtl
      * @param \Closure $callback
      * @return mixed
-     * @throws Exception
+     * @throws UberCacheException
      */
     public static function remember(string $key, Carbon $ttl, Carbon $maxTtl, \Closure $callback)
     {
@@ -42,7 +42,7 @@ class UberCache
      * @param Carbon $maxTtl
      * @param \Closure $callback
      * @return mixed
-     * @throws Exception
+     * @throws UberCacheException
      */
     private static function fetchAndStore(string $key, Carbon $maxTtl, \Closure $callback)
     {

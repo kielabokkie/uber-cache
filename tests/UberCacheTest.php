@@ -64,7 +64,7 @@ class UberCacheTest extends TestCase
 
         Travel::to(now()->addHours(2));
 
-        // Outside of regular ttl and cache expiry time so exception is thrown
+        // Outside of regular ttl and cache expiry time so exception is expected
         $this->expectException(\Exception::class);
 
         $exceptionMessage = sprintf(
@@ -93,7 +93,7 @@ class UberCacheTest extends TestCase
 
         Travel::to(now()->addHours(2));
 
-        // Outside of regular ttl and cache expiry time so exception is thrown
+        // Outside of regular ttl and cache expiry time so exception is expected
         $this->expectException(UberCacheException::class);
 
         try {
