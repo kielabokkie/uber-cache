@@ -49,7 +49,7 @@ class UberCache
         try {
             $value = $callback();
 
-            Cache::put($key, $value);
+            Cache::put($key, $value, $maxTtl);
             Cache::put(\sprintf('%s:cachedAt', $key), now(), $maxTtl);
             Cache::put(\sprintf('%s:expireAt', $key), $maxTtl, $maxTtl);
 
