@@ -8,17 +8,17 @@ jobs:
 
         strategy:
             matrix:
-                php-versions: [8.0, 7.4]
-                laravel: [8.*, 7.*, 6.*]
+                php-versions: [7.4, 8.0]
+                laravel: [6.*, 7.*, 8.*]
                 include:
-                    - laravel:  8.*
-                      testbench: 6.*
-                    - laravel:  7.*
-                      testbench: 5.*
                     - laravel:  6.*
                       testbench: 4.*
+                    - laravel:  7.*
+                      testbench: 5.*
+                    - laravel:  8.*
+                      testbench: 6.*
 
-        name: P${{ matrix.php-versions }} - L${{ matrix.laravel }}
+        name: L${{ matrix.laravel }} - PHP${{ matrix.php-versions }}
 
         steps:
             - uses: actions/checkout@v2
