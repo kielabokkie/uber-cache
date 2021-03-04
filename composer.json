@@ -29,5 +29,17 @@
         "psr-4": {
             "Kielabokkie\\UberCache\\Tests\\": "tests"
         }
+    },
+    "scripts": {
+        "phpcs": [
+            "vendor/bin/phpcs --standard=PSR12 src"
+        ],
+        "phpstan": [
+            "vendor/bin/phpstan analyse src -c ./vendor/nunomaduro/larastan/extension.neon  --level=8 --memory-limit 1G"
+        ]
+    },
+    "scripts-descriptions": {
+        "phpcs": "Run phpcs to check for codestyle violations.",
+        "phpstan": "Run phpstan to perform static analysis of the code."
     }
 }
