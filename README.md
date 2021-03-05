@@ -1,7 +1,7 @@
 # UberCache for Laravel
 
 [![Author](http://img.shields.io/badge/follow-@kielabokkie-blue.svg?logo=twitter&style=flat-square)](https://twitter.com/kielabokkie)
-[![Packagist Version](https://img.shields.io/packagist/v/kielabokkie/ubercache.svg?style=flat-square)](https://packagist.org/packages/kielabokkie/ubercache)
+[![Packagist Version](https://img.shields.io/packagist/v/kielabokkie/uber-cache.svg?style=flat-square)](https://packagist.org/packages/kielabokkie/uber-cache)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
 UberCache for Laravel works very similar to the [Retrieve & Store](https://laravel.com/docs/8.x/cache#retrieve-store) cache functionality of Laravel. The difference is that once Laravel's cache expires, and the retrieval of new data failed, you are left with no data at all. This is where UberCache comes in, as it allows you to reuse your old cache in case retrieving of new data failed.
