@@ -3,6 +3,11 @@
     "description": "Retrieve & store cache with a fallback for a specific duration",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "uber-cache",
+        "laravel",
+        "cache"
+    ],
     "authors": [
         {
             "name": "kielabokkie",
